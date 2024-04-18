@@ -1,29 +1,65 @@
 package dk.kea.dat3js.hogwarts5.config;
 
 import dk.kea.dat3js.hogwarts5.house.HouseRepository;
+import dk.kea.dat3js.hogwarts5.students.Student;
+import dk.kea.dat3js.hogwarts5.students.StudentRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import dk.kea.dat3js.hogwarts5.house.House;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class InitData implements CommandLineRunner {
 
   private final HouseRepository houseRepository;
+  private final StudentRepository studentRepository;
 
-  public InitData(HouseRepository houseRepository) {
+  public InitData(HouseRepository houseRepository, StudentRepository studentRepository) {
     this.houseRepository = houseRepository;
+    this.studentRepository = studentRepository;
   }
 
   @Override
   public void run(String... args) throws Exception {
     createHouses();
+    createStudents();
   }
 
+  private void createStudents() {
+    List<Student> students = new ArrayList<>();
+
+    Student harry = new Student("Harry", "James", "Potter", gryffindor, 5);
+    Student hermione = new Student("Hermione", "Jean", "Granger", gryffindor, 5);
+    Student ron = new Student("Ron", "Bilius", "Weasley", gryffindor, 5);
+    Student neville = new Student("Neville", "Frank", "Longbottom", gryffindor, 5);
+    Student ginny = new Student("Ginny", "Molly", "Weasley", gryffindor, 5);
+    Student fred = new Student("Fred", "Gideon", "Weasley", gryffindor, 5);
+    Student george = new Student("George", "Fabian", "Weasley", gryffindor, 5);
+    Student percy = new Student("Percy", "Ignatius", "Weasley", gryffindor, 5);
+
+    Student draco = new Student("Draco", "", "Malfoy", slytherin, 5);
+    Student cedric = new Student("Cedric", "", "Diggory", hufflepuff, 6);
+    Student luna = new Student("Luna", "", "Lovegood", ravenclaw, 4);
+
+    students.addAll(List.of(harry, hermione, ron, neville, ginny, fred, george, percy, draco, cedric, luna));
+
+    studentRepository.saveAll(students);
+
+  }
+
+  private House gryffindor;
+  private House slytherin;
+  private House hufflepuff;
+  private House ravenclaw;
+
+
   private void createHouses() {
-     House gryffindor = new House("Gryffindor", "Godric Gryffindor", new String[] {"red", "gold"});
-     House slytherin = new House("Slytherin", "Salazar Slytherin", new String[] {"green", "silver"});
-     House hufflepuff = new House("Hufflepuff", "Helga Hufflepuff", new String[] {"yellow", "black"});
-     House ravenclaw = new House("Ravenclaw", "Rowena Ravenclaw", new String[] {"blue", "bronze"});
+      gryffindor = new House("Gryffindor", "Godric Gryffindor", new String[] {"red", "gold"});
+      slytherin = new House("Slytherin", "Salazar Slytherin", new String[] {"green", "silver"});
+      hufflepuff = new House("Hufflepuff", "Helga Hufflepuff", new String[] {"yellow", "black"});
+      ravenclaw = new House("Ravenclaw", "Rowena Ravenclaw", new String[] {"blue", "bronze"});
 
      houseRepository.save(gryffindor);
       houseRepository.save(slytherin);
