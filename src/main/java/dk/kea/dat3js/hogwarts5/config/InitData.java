@@ -8,7 +8,10 @@ import org.springframework.stereotype.Component;
 import dk.kea.dat3js.hogwarts5.house.House;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Component
 public class InitData implements CommandLineRunner {
@@ -28,7 +31,9 @@ public class InitData implements CommandLineRunner {
   }
 
   private void createStudents() {
-    List<Student> students = new ArrayList<>();
+    // To avoid creating and re-creating the same students, we first get all those that already exist
+    Set<Student> existingStudents = new HashSet<>();
+    existingStudents.addAll(studentRepository.findAll());
 
     Student harry = new Student("Harry", "James", "Potter", gryffindor, 5);
     Student hermione = new Student("Hermione", "Jean", "Granger", gryffindor, 5);
@@ -43,10 +48,8 @@ public class InitData implements CommandLineRunner {
     Student cedric = new Student("Cedric", "", "Diggory", hufflepuff, 6);
     Student luna = new Student("Luna", "", "Lovegood", ravenclaw, 4);
 
-    students.addAll(List.of(harry, hermione, ron, neville, ginny, fred, george, percy, draco, cedric, luna));
-
-    studentRepository.saveAll(students);
-
+    existingStudents.addAll(List.of(harry, hermione, ron, neville, ginny, fred, george, percy, draco, cedric, luna));
+    studentRepository.saveAll(existingStudents);
   }
 
   private House gryffindor;

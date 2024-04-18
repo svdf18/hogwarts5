@@ -3,6 +3,8 @@ package dk.kea.dat3js.hogwarts5.students;
 import dk.kea.dat3js.hogwarts5.house.House;
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 public class Student {
   @Id
@@ -16,6 +18,10 @@ public class Student {
   private Integer schoolYear; // 1-7
 
   public Student() {
+  }
+
+  public Student(String firstName, String lastName, House house, int schoolYear) {
+    this(firstName, null, lastName, house, schoolYear);
   }
 
   public Student(String firstName, String middleName, String lastName, House house, int schoolYear) {
@@ -73,4 +79,18 @@ public class Student {
   public void setSchoolYear(Integer schoolYear) {
     this.schoolYear = schoolYear;
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Student student = (Student) o;
+    return Objects.equals(getFirstName(), student.getFirstName()) && Objects.equals(getMiddleName(), student.getMiddleName()) && Objects.equals(getLastName(), student.getLastName()) && Objects.equals(getHouse().getName(), student.getHouse().getName());
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(getFirstName(), getMiddleName(), getLastName(), getHouse().getName());
+  }
+
 }
