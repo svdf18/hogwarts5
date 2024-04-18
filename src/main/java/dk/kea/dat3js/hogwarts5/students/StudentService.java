@@ -1,5 +1,6 @@
 package dk.kea.dat3js.hogwarts5.students;
 
+import dk.kea.dat3js.hogwarts5.house.HouseService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -8,61 +9,86 @@ import java.util.Optional;
 @Service
 public class StudentService {
   private final StudentRepository studentRepository;
+  private final HouseService houseService;
 
-  public StudentService(StudentRepository studentRepository) {
+  public StudentService(StudentRepository studentRepository, HouseService houseService) {
     this.studentRepository = studentRepository;
+    this.houseService = houseService;
   }
 
-  public List<Student> findAll() {
-    return studentRepository.findAll();
+  public List<StudentResponseDTO> findAll() {
+    return studentRepository.findAll().stream().map(this::toDTO).toList();
   }
 
-  public Optional<Student> findById(int id) {
-    return studentRepository.findById(id);
+  public Optional<StudentResponseDTO> findById(int id) {
+    return studentRepository.findById(id).map(this::toDTO);
   }
 
-  public Student save(Student student) {
-    return studentRepository.save(student);
+  public StudentResponseDTO save(StudentRequestDTO student) {
+    return toDTO(studentRepository.save(fromDTO(student)));
   }
 
-  public Optional<Student> updateIfExists(int id, Student student) {
+  public Optional<StudentResponseDTO> updateIfExists(int id, StudentRequestDTO student) {
     if (studentRepository.existsById(id)) {
-      student.setId(id);
-      return Optional.of(studentRepository.save(student));
+      Student existingStudent = fromDTO(student);
+      existingStudent.setId(id);
+      return Optional.of(toDTO(studentRepository.save(existingStudent)));
     } else {
+      // TODO: Throw error?
       return Optional.empty();
     }
   }
 
-  public Optional<Student> partialUpdate(int id, Student student) {
+  public Optional<StudentResponseDTO> partialUpdate(int id, StudentRequestDTO student) {
     Optional<Student> existingStudent = studentRepository.findById(id);
     if(existingStudent.isPresent()) {
       Student studentToUpdate = existingStudent.get();
-      if(student.getFirstName() != null) {
-        studentToUpdate.setFirstName(student.getFirstName());
+      if(student.firstName() != null) {
+        studentToUpdate.setFirstName(student.firstName());
       }
-      if(student.getMiddleName() != null) {
-        studentToUpdate.setMiddleName(student.getMiddleName());
+      if(student.middleName() != null) {
+        studentToUpdate.setMiddleName(student.middleName());
       }
-      if(student.getLastName() != null) {
-        studentToUpdate.setLastName(student.getLastName());
+      if(student.lastName() != null) {
+        studentToUpdate.setLastName(student.lastName());
       }
-      if(student.getHouse() != null) {
-        studentToUpdate.setHouse(student.getHouse());
+      if(student.house() != null) {
+        studentToUpdate.setHouse(houseService.findById(student.house()).orElseThrow());
       }
-      if(student.getSchoolYear() != null) {
-        studentToUpdate.setSchoolYear(student.getSchoolYear());
+      if(student.schoolYear() != null) {
+        studentToUpdate.setSchoolYear(student.schoolYear());
       }
-      return Optional.of(studentRepository.save(studentToUpdate));
+      return Optional.of(toDTO(studentRepository.save(studentToUpdate)));
     } else {
       // TODO: handle error
       return Optional.empty();
     }
   }
 
-  public Optional<Student> deleteById(int id) {
-    Optional<Student> existingStudent = studentRepository.findById(id);
+  public Optional<StudentResponseDTO> deleteById(int id) {
+    Optional<StudentResponseDTO> existingStudent = studentRepository.findById(id).map(this::toDTO);
     studentRepository.deleteById(id);
     return existingStudent;
+  }
+
+  private StudentResponseDTO toDTO(Student studentEntity) {
+    return new StudentResponseDTO(
+        studentEntity.getId(),
+        studentEntity.getFirstName(),
+        studentEntity.getMiddleName(),
+        studentEntity.getLastName(),
+        studentEntity.getHouse().getName(),
+        studentEntity.getSchoolYear()
+    );
+  }
+
+  private Student fromDTO(StudentRequestDTO studentDTO) {
+    return new Student(
+        studentDTO.firstName(),
+        studentDTO.middleName(),
+        studentDTO.lastName(),
+        houseService.findById(studentDTO.house()).orElseThrow(),
+        studentDTO.schoolYear()
+    );
   }
 }

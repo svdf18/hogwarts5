@@ -17,34 +17,34 @@ public class StudentController {
 
   // get all students
   @GetMapping
-  public List<Student> getAllStudents() {
+  public List<StudentResponseDTO> getAllStudents() {
     return studentService.findAll();
   }
 
   // get student by id
   @GetMapping("/{id}")
-  public ResponseEntity<Student> getStudent(@PathVariable int id) {
+  public ResponseEntity<StudentResponseDTO> getStudent(@PathVariable int id) {
     return ResponseEntity.of(studentService.findById(id));
   }
 
   // create post, put, patch, delete methods
   @PostMapping
-  public Student createStudent(@RequestBody Student student) {
+  public StudentResponseDTO createStudent(@RequestBody StudentRequestDTO student) {
     return studentService.save(student);
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Student> updateStudent(@PathVariable int id, @RequestBody Student student) {
+  public ResponseEntity<StudentResponseDTO> updateStudent(@PathVariable int id, @RequestBody StudentRequestDTO student) {
     return ResponseEntity.of(studentService.updateIfExists(id, student));
   }
 
   @PatchMapping("/{id}")
-  public ResponseEntity<Student> partialUpdateStudent(@PathVariable int id, @RequestBody Student student) {
+  public ResponseEntity<StudentResponseDTO> partialUpdateStudent(@PathVariable int id, @RequestBody StudentRequestDTO student) {
     return ResponseEntity.of(studentService.partialUpdate(id, student));
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<Student> deleteStudent(@PathVariable int id) {
+  public ResponseEntity<StudentResponseDTO> deleteStudent(@PathVariable int id) {
     return ResponseEntity.of(studentService.deleteById(id));
   }
 }
