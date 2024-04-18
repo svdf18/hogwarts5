@@ -72,7 +72,7 @@ public class StudentService {
   }
 
   private StudentResponseDTO toDTO(Student studentEntity) {
-    return new StudentResponseDTO(
+    StudentResponseDTO dto = new StudentResponseDTO(
         studentEntity.getId(),
         studentEntity.getFirstName(),
         studentEntity.getMiddleName(),
@@ -80,15 +80,19 @@ public class StudentService {
         studentEntity.getHouse().getName(),
         studentEntity.getSchoolYear()
     );
+
+    return dto;
   }
 
   private Student fromDTO(StudentRequestDTO studentDTO) {
-    return new Student(
+    Student entity = new Student(
         studentDTO.firstName(),
         studentDTO.middleName(),
         studentDTO.lastName(),
         houseService.findById(studentDTO.house()).orElseThrow(),
         studentDTO.schoolYear()
     );
+
+    return entity;
   }
 }
