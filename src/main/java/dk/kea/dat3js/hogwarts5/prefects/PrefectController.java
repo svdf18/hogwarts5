@@ -51,12 +51,14 @@ public class PrefectController {
     }
 
     @PostMapping("/set")
-    public ResponseEntity<StudentResponseDTO> setStudentAsPrefect(@RequestBody StudentResponseDTO studentResponseDTO) {
+    public ResponseEntity<?> setStudentAsPrefect(@RequestBody StudentResponseDTO studentResponseDTO) {
         try {
             prefectService.setStudentAsPrefect(studentResponseDTO.id());
-            return ResponseEntity.ok(studentService.findById(studentResponseDTO.id()).orElseThrow());
+            StudentResponseDTO updatedStudent = studentService.findById(studentResponseDTO.id())
+                    .orElseThrow(() -> new Exception("Failed to retrieve updated student"));
+            return ResponseEntity.ok(updatedStudent);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
 
