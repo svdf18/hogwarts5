@@ -14,6 +14,14 @@ public class Student implements PersonWithNames {
   private String firstName;
   private String middleName;
   private String lastName;
+
+
+  public enum Gender {
+    MALE, FEMALE, OTHER
+  }
+  @Enumerated(EnumType.STRING)
+  private Gender gender;
+  
   @ManyToOne
   private House house;
 
@@ -23,14 +31,15 @@ public class Student implements PersonWithNames {
   public Student() {
   }
 
-  public Student(String firstName, String lastName, House house, boolean isPrefect, int schoolYear) {
-    this(firstName, null, lastName, house, isPrefect, schoolYear);
+  public Student(String firstName, String lastName, Gender gender, House house, boolean isPrefect, int schoolYear) {
+    this(firstName, null, lastName, gender, house, isPrefect, schoolYear);
   }
 
-  public Student(String firstName, String middleName, String lastName, House house, boolean isPrefect, int schoolYear) {
+  public Student(String firstName, String middleName, String lastName, Gender gender, House house, boolean isPrefect, int schoolYear) {
     setFirstName(firstName);
     setMiddleName(middleName);
     setLastName(lastName);
+    this.gender = gender;
     this.house = house;
     this.isPrefect = isPrefect;
     this.schoolYear = schoolYear;
@@ -68,6 +77,14 @@ public class Student implements PersonWithNames {
     this.lastName = lastName;
   }
 
+  public Gender getGender() {
+    return gender;
+  }
+
+  public void setGender(Gender gender) {
+    this.gender = gender;
+  }
+
   public House getHouse() {
     return house;
   }
@@ -75,6 +92,7 @@ public class Student implements PersonWithNames {
   public void setHouse(House house) {
     this.house = house;
   }
+
 
   public boolean isPrefect() {
     return isPrefect;
@@ -104,5 +122,4 @@ public class Student implements PersonWithNames {
   public int hashCode() {
     return Objects.hash(getFirstName(), getMiddleName(), getLastName(), getHouse().getName());
   }
-
 }

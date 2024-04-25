@@ -71,6 +71,10 @@ public class StudentService {
     return existingStudent;
   }
 
+  public boolean isValidGender(String gender) {
+    return gender != null && (gender.equalsIgnoreCase("male") || gender.equalsIgnoreCase("female") || gender.equalsIgnoreCase("other"));
+  }
+
   public StudentResponseDTO toDTO(Student studentEntity) {
     StudentResponseDTO dto = new StudentResponseDTO(
             studentEntity.getId(),
@@ -78,6 +82,7 @@ public class StudentService {
             studentEntity.getMiddleName(),
             studentEntity.getLastName(),
             studentEntity.getFullName(),
+            studentEntity.getGender().name(),
             studentEntity.getHouse().getName(),
             studentEntity.isPrefect(),
             studentEntity.getSchoolYear()
@@ -87,10 +92,16 @@ public class StudentService {
   }
 
   public Student fromDTO(StudentRequestDTO studentDTO) {
+    Student.Gender gender = null;
+    if (studentDTO.gender() != null) {
+      gender = Student.Gender.valueOf(studentDTO.gender().toUpperCase());
+    }
+
     Student entity = new Student(
             studentDTO.firstName(),
             studentDTO.middleName(),
             studentDTO.lastName(),
+            gender,
             houseService.findById(studentDTO.house()).orElseThrow(),
             studentDTO.isPrefect(),
             studentDTO.schoolYear()

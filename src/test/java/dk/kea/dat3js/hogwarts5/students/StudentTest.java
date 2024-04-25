@@ -2,6 +2,7 @@ package dk.kea.dat3js.hogwarts5.students;
 
 import org.junit.jupiter.api.Test;
 
+import static dk.kea.dat3js.hogwarts5.students.Student.Gender.MALE;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StudentTest {
@@ -9,7 +10,7 @@ class StudentTest {
     @Test
     void getFullName() {
         // arrange
-        Student student = new Student("Harry", "James", "Potter", null, false, 1);
+        Student student = new Student("Harry", "James", "Potter", MALE, null, false, 1);
 
         // act
         String fullName = student.getFullName();
@@ -21,7 +22,7 @@ class StudentTest {
     @Test
     void setFullNameWithMiddleName() {
         // arrange
-        Student student = new Student("first", "middle", "last", null, false, 1);
+        Student student = new Student("first", "middle", "last", MALE, null, false, 1);
 
         // act
         student.setFirstName("Hermione");
@@ -37,7 +38,7 @@ class StudentTest {
     @Test
     void setFullNameWithoutMiddleName() {
         // arrange
-        Student student = new Student("first", "middle", "last", null, false, 1);
+        Student student = new Student("first", "middle", "last", MALE,null, false, 1);
 
         // act
         student.setFirstName("Neville");
@@ -53,7 +54,7 @@ class StudentTest {
     @Test
     void setFullNameWithOnlyAFirstName() {
         // arrange
-        Student student = new Student("first", "Middle", "Last", null, false, 1);
+        Student student = new Student("first", "Middle", "Last", MALE,null, false, 1);
 
         // act
         student.setFirstName("Leanne");
@@ -67,7 +68,7 @@ class StudentTest {
     @Test
     void setFullNameWithMultipleMiddleNames() {
         // arrange
-        Student student = new Student("first", "middle", "last", null, false, 1);
+        Student student = new Student("first", "middle", "last",MALE, null, false, 1);
 
         // act
         student.setFirstName("Albus");
@@ -83,7 +84,7 @@ class StudentTest {
     @Test
     void setFullNameWithEmptyString() {
         // arrange
-        Student student = new Student("first", "middle", "last", null, false, 1);
+        Student student = new Student("first", "middle", "last",MALE, null, false, 1);
 
         // act
         student.setFullName("");
@@ -97,7 +98,7 @@ class StudentTest {
     @Test
     void setFullNameWithNull() {
         // arrange
-        Student student = new Student("first", "middle", "last", null, false, 1);
+        Student student = new Student("first", "middle", "last", MALE,null, false, 1);
 
         // act
         student.setFullName(null);
@@ -111,7 +112,7 @@ class StudentTest {
     @Test
     void capitalizeBySettingStudentFullName() {
         // arrange
-        Student student = new Student("first", "middle", "last", null, false, 1);
+        Student student = new Student("first", "middle", "last",MALE, null, false, 1);
 
         // act
         student.setFullName("harry james potter");
@@ -123,7 +124,7 @@ class StudentTest {
     @Test
     void capitalizeWithCrazyCapitalizATION(){
         // arrange
-        Student student = new Student("first", "middle", "last", null, false, 1);
+        Student student = new Student("first", "middle", "last", MALE, null, false, 1);
 
         // act
         String capitalized = student.capitalize("hArRy jAMEs pOTtEr");
@@ -135,12 +136,24 @@ class StudentTest {
     @Test
     void capitalize() {
         // arrange
-        Student student = new Student("first", "middle", "last", null, false, 1);
+        Student student = new Student("first", "middle", "last", MALE, null, false, 1);
 
         // act
         String capitalized = student.capitalize("harry james potter");
 
         // assert
         assertEquals("Harry James Potter", capitalized);
+    }
+
+    @Test
+    void setStudentGender() {
+        // arrange
+        Student student = new Student("first", "middle", "last", null, null, false, 1);
+
+        // act
+        student.setGender(Student.Gender.MALE);
+
+        // assert
+        assertEquals(Student.Gender.MALE, student.getGender());
     }
 }

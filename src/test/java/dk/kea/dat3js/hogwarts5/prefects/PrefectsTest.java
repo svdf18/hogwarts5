@@ -4,17 +4,19 @@ import dk.kea.dat3js.hogwarts5.students.Student;
 import dk.kea.dat3js.hogwarts5.house.House;
 import org.junit.jupiter.api.Test;
 
+import static dk.kea.dat3js.hogwarts5.students.Student.Gender.MALE;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PrefectsTest {
 
+
     @Test
     void getAllStudentPrefects() {
         // arrange
-        Student student1 = new Student("Harry", "James", "Potter", null, true, 1);
-        Student student2 = new Student("Hermione", "Jean", "Granger", null, true, 1);
-        Student student3 = new Student("Ron", "Bilius", "Weasley", null, false, 1);
+        Student student1 = new Student("Harry", "James", "Potter", MALE, null, true, 1);
+        Student student2 = new Student("Hermione", "Jean", "Granger", MALE, null, true, 1);
+        Student student3 = new Student("Ron", "Bilius", "Weasley", MALE,null, false, 1);
 
         // act
         boolean isPrefect1 = student1.isPrefect();
@@ -30,7 +32,7 @@ public class PrefectsTest {
     @Test
     void getStudentByIdIfStudentIsPrefect() {
         // arrange
-        Student student = new Student("Harry", "James", "Potter", null, true, 1);
+        Student student = new Student("Harry", "James", "Potter", MALE, null, true, 1);
 
         //act
         boolean isPrefect = student.isPrefect();
@@ -44,9 +46,9 @@ public class PrefectsTest {
         // arrange
         House house = new House("Gryffindor", "Godric Gryffindor", new String[]{"Red", "Gold"});
 
-        Student student1 = new Student("Harry", "James", "Potter", house, true, 1);
-        Student student2 = new Student("Hermione", "Jean", "Granger", house, true, 1);
-        Student student3 = new Student("Ron", "Bilius", "Weasley", house, false, 1);
+        Student student1 = new Student("Harry", "James", "Potter", MALE, house, true, 1);
+        Student student2 = new Student("Hermione", "Jean", "Granger", MALE, house, true, 1);
+        Student student3 = new Student("Ron", "Bilius", "Weasley", MALE, house, false, 1);
 
         // act
         boolean isPrefect1 = student1.isPrefect();
@@ -63,12 +65,24 @@ public class PrefectsTest {
     @Test
     void setStudentAsPrefect() {
         // arrange
-        Student student = new Student("Harry", "James", "Potter", null, false, 1);
+        Student student = new Student("Harry", "James", "Potter", MALE,null, false, 1);
 
         // act
         student.setPrefect(true);
 
         // assert
         assertTrue(student.isPrefect());
+    }
+
+    @Test
+    void isStudentAlreadyAPrefect() {
+        // arrange
+        Student student = new Student("Harry", "James", "Potter", MALE, null, true, 1);
+
+        // act
+        boolean isPrefect = student.isPrefect();
+
+        // assert
+        assertTrue(isPrefect);
     }
 }

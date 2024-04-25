@@ -29,9 +29,14 @@ public class StudentController {
 
   // create post, put, patch, delete methods
   @PostMapping
-  public StudentResponseDTO createStudent(@RequestBody StudentRequestDTO student) {
-    return studentService.save(student);
+  public ResponseEntity<?> createStudent(@RequestBody StudentRequestDTO student) {
+    if (!studentService.isValidGender(student.gender())) {
+      return ResponseEntity.badRequest().body("Invalid gender. Please provide 'male', 'female', or 'other'.");
+    }
+    StudentResponseDTO savedStudent = studentService.save(student);
+    return ResponseEntity.ok(savedStudent);
   }
+
 
   @PutMapping("/{id}")
   public ResponseEntity<StudentResponseDTO> updateStudent(@PathVariable int id, @RequestBody StudentRequestDTO student) {

@@ -10,4 +10,8 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     List<Student> findAllByIsPrefect(boolean isPrefect);
 
     List<Student> findAllPrefectsByHouse(House house);
+
+    long countByHouseAndIsPrefect(House house, boolean isPrefect);
+
+    List<Student> findByHouseAndIsPrefect(House house, boolean isPrefect);
 }

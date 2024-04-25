@@ -59,4 +59,15 @@ public class PrefectController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @DeleteMapping("/remove/{id}")
+    public ResponseEntity<StudentResponseDTO> removePrefect(@PathVariable int id) {
+        try {
+            Student updatedStudent = prefectService.removePrefect(id);
+            StudentResponseDTO studentResponseDTO = studentService.toDTO(updatedStudent);
+            return ResponseEntity.ok(studentResponseDTO);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }
