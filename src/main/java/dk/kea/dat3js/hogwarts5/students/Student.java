@@ -1,12 +1,13 @@
 package dk.kea.dat3js.hogwarts5.students;
 
+import dk.kea.dat3js.hogwarts5.common.PersonWithNames;
 import dk.kea.dat3js.hogwarts5.house.House;
 import jakarta.persistence.*;
 
 import java.util.Objects;
 
 @Entity
-public class Student {
+public class Student implements PersonWithNames {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
@@ -15,20 +16,23 @@ public class Student {
   private String lastName;
   @ManyToOne
   private House house;
+
+  private boolean isPrefect;
   private Integer schoolYear; // 1-7
 
   public Student() {
   }
 
-  public Student(String firstName, String lastName, House house, int schoolYear) {
-    this(firstName, null, lastName, house, schoolYear);
+  public Student(String firstName, String lastName, House house, boolean isPrefect, int schoolYear) {
+    this(firstName, null, lastName, house, isPrefect, schoolYear);
   }
 
-  public Student(String firstName, String middleName, String lastName, House house, int schoolYear) {
-    this.firstName = firstName;
-    this.middleName = middleName;
-    this.lastName = lastName;
+  public Student(String firstName, String middleName, String lastName, House house, boolean isPrefect, int schoolYear) {
+    setFirstName(firstName);
+    setMiddleName(middleName);
+    setLastName(lastName);
     this.house = house;
+    this.isPrefect = isPrefect;
     this.schoolYear = schoolYear;
   }
 
@@ -70,6 +74,14 @@ public class Student {
 
   public void setHouse(House house) {
     this.house = house;
+  }
+
+  public boolean isPrefect() {
+    return isPrefect;
+  }
+
+  public void setPrefect(boolean prefect) {
+    isPrefect = prefect;
   }
 
   public Integer getSchoolYear() {

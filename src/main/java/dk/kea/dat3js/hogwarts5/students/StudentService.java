@@ -71,27 +71,34 @@ public class StudentService {
     return existingStudent;
   }
 
-  private StudentResponseDTO toDTO(Student studentEntity) {
+  public StudentResponseDTO toDTO(Student studentEntity) {
     StudentResponseDTO dto = new StudentResponseDTO(
-        studentEntity.getId(),
-        studentEntity.getFirstName(),
-        studentEntity.getMiddleName(),
-        studentEntity.getLastName(),
-        studentEntity.getHouse().getName(),
-        studentEntity.getSchoolYear()
+            studentEntity.getId(),
+            studentEntity.getFirstName(),
+            studentEntity.getMiddleName(),
+            studentEntity.getLastName(),
+            studentEntity.getFullName(),
+            studentEntity.getHouse().getName(),
+            studentEntity.isPrefect(),
+            studentEntity.getSchoolYear()
     );
 
     return dto;
   }
 
-  private Student fromDTO(StudentRequestDTO studentDTO) {
+  public Student fromDTO(StudentRequestDTO studentDTO) {
     Student entity = new Student(
-        studentDTO.firstName(),
-        studentDTO.middleName(),
-        studentDTO.lastName(),
-        houseService.findById(studentDTO.house()).orElseThrow(),
-        studentDTO.schoolYear()
+            studentDTO.firstName(),
+            studentDTO.middleName(),
+            studentDTO.lastName(),
+            houseService.findById(studentDTO.house()).orElseThrow(),
+            studentDTO.isPrefect(),
+            studentDTO.schoolYear()
     );
+
+    if(studentDTO.fullName() != null) {
+      entity.setFullName(studentDTO.fullName());
+    }
 
     return entity;
   }
