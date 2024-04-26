@@ -1,5 +1,6 @@
 package dk.kea.dat3js.hogwarts5.students;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,7 +35,7 @@ public class StudentController {
       return ResponseEntity.badRequest().body("Invalid gender. Please provide 'male', 'female', or 'other'.");
     }
     StudentResponseDTO savedStudent = studentService.save(student);
-    return ResponseEntity.ok(savedStudent);
+    return ResponseEntity.status(HttpStatus.CREATED).body(savedStudent);
   }
 
 

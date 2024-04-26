@@ -63,7 +63,7 @@ public class PrefectService {
     }
 
     private void checkSchoolYear(Student student) throws Exception {
-        if (student.getSchoolYear() < 4) {
+        if (student.getSchoolYear() < 5) {
             throw new Exception("Student must be in school year 5 or above to become a prefect");
         }
         System.out.println(student.getSchoolYear());

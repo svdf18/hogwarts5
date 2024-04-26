@@ -85,4 +85,24 @@ public class PrefectsTest {
         // assert
         assertTrue(isPrefect);
     }
+
+//    @Test
+//    void isStudentInSchoolYear5OrAbove() {
+//        // arrange
+//        Student student = new Student("Harry", "James", "Potter", MALE, null, false, 1);
+//
+//        // Set the school year to 4
+//        student.setSchoolYear(4);
+//        student.setPrefect(true);
+//
+//        // act and assert
+//        assertFalse(setStudentAsPrefect(student));
+//
+//        // Set the school year to 5
+//        student.setSchoolYear(5);
+//        student.setPrefect(true);
+//
+//        // act and assert
+//        assertTrue(setStudentAsPrefect(student));
+//    }
 }
