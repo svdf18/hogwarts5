@@ -20,6 +20,9 @@ public class House {
     this.color2 = colors[1];
   }
 
+  public House(int i, String gryffindor, String godricGryffindor, String[] strings) {
+  }
+
   public String getName() {
     return name;
   }
